@@ -1,0 +1,181 @@
+{
+  "version": "3.0-template",
+  "updated": "{{AS_OF_DATE}}",
+  "mode": "adaptive",
+  "source": "通用模板。硬红线见 _shared/REDLINES.md，分层说明见 _shared/规则三层说明.md",
+  "principle": "规则分三层：① 硬红线（全局恒真，任何场景不许改）② 场景参数（随业务背景/平台/节点变化，从 profile 取，允许显式覆盖并留痕）③ 历史基线（只作参照，不是规定）。把某一个方案的参数写成全局规定，是误报的根源。",
+  "profiles_dir": "profiles",
+  "default_profile": "base",
+  "profile_resolution": "显式 --profile 优先 > 方案内 frontmatter 的 profile 字段 > default_profile。profile 支持 extends 继承，子档只写差异项。",
+  "layers": {
+    "hard": {
+      "description": "不可自适应。任何 profile 都不得覆盖，lint 恒检查。",
+      "items": [
+        "内容与社区红线：付费变强 / 官方腔 / 服线混淆 / 事实可溯源 / 商业披露",
+        "数据纪律：不可比口径不得相加、折算值不得与实测相加、比率分母不可被渠道单方操纵、证据等级必须标",
+        "奖励公示与商业披露：创作者合作显式披露、未授权素材不可用",
+        "交付：对外 html 必须自包含（外部引用 0）、外发前脱敏、单文件可打开自检",
+        "算术：行总价值＝单价×数量、渠道小计之和＝总盘子、正文与表格同源",
+        "现实边界线：基于游戏本体事实与玩家群体实测，禁止脱实表述（见 reality_guard）"
+      ]
+    },
+    "scene": {
+      "description": "必须自适应。由 profile 给出，缺省才用 fallbacks。覆盖要写进 profile.overrides_log。",
+      "fields": [
+        "service_line / node / activity_window / goal / budget",
+        "channels（名单、平台、角色、成本模型、可回传字段、能力）",
+        "weight（是否启用、顺序、同级容差、卡池跨度）",
+        "prize（奖池模型、价带、份数结构、面额）",
+        "task_kit（由 capabilities 派生的任务链）",
+        "metrics（可比 / 不可比 / 禁用 / 点击即计）",
+        "schedule（锚点、必备风险、是否需 {{APPROVAL_PARTY}} 审批、是否有版本日锚点）",
+        "delivery（脱敏词表、外发对象）"
+      ]
+    },
+    "baseline": {
+      "description": "只作参照。引用必须标 A/B/C 证据等级，不得直接当验收阈值。",
+      "items": [
+        "历史参与人数",
+        "历史曝光量级",
+        "历史奖励结构占比",
+        "同品类 CTR 参考"
+      ]
+    }
+  },
+  "derive": {
+    "note": "派生规则（人读）；脚本实现见 plan-lint / prize-calc。核心：能问出来的不写死，能算出来的不拍脑袋。",
+    "channels": "profile.channels。渠道数量、名字、角色、成本模型一律不写死；新增渠道＝往数组加一项。",
+    "channel_order": "profile.channel_order（做表顺序跟业务原表，不跟方案正文顺序）。",
+    "weight": "profile.weight.enabled=false 时整组权重校验关闭（单渠道 CPS / H5 场景本来就无权重排序）。",
+    "weight_equal": "同级判定＝两家合计差额 <= profile.weight.tolerance，不是精确相等。",
+    "prize_bands": "profile.prize.bands。仅当 prize.model == lottery_tiers 时启用；积分制 / CPS / 无奖品场景关闭。",
+    "count_structure": "份数结构由 profile.prize.count_by_budget 按实际盘子插值取档，且只在该项显式启用时检查。",
+    "card_ratio": "卡占比下限取 profile.prize.structure.card_ratio_min；盘子变化时先查结构再砍卡。",
+    "task_kit": "由 profile.channels[].capabilities 派生：能一键入库→入库任务；能加速→加速时长；能跳外链且节点需导流→跳转任务。无该能力就不生成该任务。",
+    "forbidden_metrics": "禁用指标带 applies_to：只对不具备该回传能力的渠道生效。",
+    "comparable_metrics": "指标能否进可比层，取决于该渠道 profile.channels[].reportable 是否包含它。",
+    "schedule_anchors": "profile.schedule.anchors；needs_approval=false 时不要求前置审批窗口。",
+    "required_risks": "profile.schedule.risks，按节点性质与依赖派生，不固定条数。",
+    "budget": "总额参考带与超限阈值取 profile.budget；缺省才用 fallbacks。",
+    "desensitize": "脱敏词表取 profile.delivery.desensitize_keywords；外发对象不同，要脱的字段不同。",
+    "prebooking_words": "预约期禁用词只在 node.type == 预约期 时启用；版本周写「版本已上线」是事实，不是违规。"
+  },
+  "fallbacks": {
+    "note": "profile 未提供时使用，且不作为硬指标，只给提示。以下为中性缺省值，按你的业务调整。",
+    "weight_tolerance": 100,
+    "card_ratio_min": 0.6,
+    "head_per_channel_min": 1,
+    "card_pool_span_pp": 10,
+    "budget_over_requires_reason": null,
+    "schedule_anchors": [],
+    "required_risks": []
+  },
+  "reality_guard": {
+    "note": "硬红线：方案必须基于游戏本体事实与玩家实测，禁止脱实表述。本段所有 {{...}} 由使用方填写，包内不预置任何真实事实。",
+    "sources_template": [
+      {
+        "id": "game",
+        "path": "{{GAME_RESEARCH_FILE}}",
+        "sections": "{{RESEARCH_SECTIONS}}",
+        "as_of": "{{RESEARCH_DATE}}",
+        "type": "{{SOURCE_TYPE}}"
+      },
+      {
+        "id": "audience",
+        "path": "{{AUDIENCE_DATA_FILE}}",
+        "n_samples": "{{SAMPLE_N}}",
+        "as_of": "{{AUDIENCE_DATE}}",
+        "type": "{{AUDIENCE_SOURCE_TYPE}}"
+      }
+    ],
+    "stable_facts_template": [
+      "{{GAME_FACT_MONETIZATION}}",
+      "{{GAME_FACT_AVAILABILITY}}",
+      "{{GAME_FACT_SERVER_LINES}}",
+      "{{GAME_FACT_CADENCE}}",
+      "{{GAME_FACT_COMMUNITY_VOICE}}"
+    ],
+    "forbidden_claims": [
+      {
+        "pattern": "{{PAY_TO_WIN_WORD_1}}",
+        "why": "{{GAME_FACT_MONETIZATION}}",
+        "level": "error"
+      },
+      {
+        "pattern": "{{PAY_TO_WIN_WORD_2}}",
+        "why": "{{GAME_FACT_MONETIZATION}}",
+        "level": "error"
+      },
+      {
+        "pattern": "{{PAID_BUNDLE_NAME}}",
+        "why": "限时付费包，渠道无权发放游戏内成品",
+        "level": "warn"
+      },
+      {
+        "pattern": "{{PAID_CURRENCY_NAME}}",
+        "why": "付费货币，不能作为渠道活动奖品",
+        "level": "warn"
+      },
+      {
+        "pattern": "{{EXCLUSIVE_ITEM_WORD}}",
+        "why": "绝版物品需官方渠道，渠道活动不得承诺",
+        "level": "warn"
+      },
+      {
+        "pattern": "数据互通",
+        "why": "{{GAME_FACT_SERVER_LINES}}",
+        "level": "error"
+      },
+      {
+        "pattern": "跨服继承",
+        "why": "{{GAME_FACT_SERVER_LINES}}",
+        "level": "error"
+      },
+      {
+        "pattern": "同账号通用",
+        "why": "{{GAME_FACT_SERVER_LINES}}",
+        "level": "error"
+      }
+    ],
+    "voice_ratio_pattern": "(\\d+(?:\\.\\d+)?)\\s*%\\s*的?(玩家|用户|人群)",
+    "voice_ratio_exempt": [
+      "声量",
+      "讨论",
+      "样本",
+      "占比为声量"
+    ],
+    "data_discipline": [
+      "声量占比 ≠ 人口比例；写「X% 的玩家/用户」须带「讨论声量」限定",
+      "带时点的数字引用须标出处与日期",
+      "人群标签以聚类原始字段为准，不以报告渲染文本为准"
+    ]
+  },
+  "redline_words": {
+    "pay_to_win": [
+      "氪金",
+      "变强捷径",
+      "战力领先",
+      "付费领先",
+      "速成战力",
+      "碾压"
+    ],
+    "official_tone": [
+      "敬请期待",
+      "官方高度重视",
+      "感谢您的理解",
+      "官方指定",
+      "唯一合作",
+      "权威发布"
+    ],
+    "server_mix": [
+      "{{SERVER_LINE_A}}",
+      "{{SERVER_LINE_B}}"
+    ],
+    "note": "以上为硬红线，全局恒真，任何 profile 不得覆盖。预约期禁用词移到 profile.metrics.prebooking_false_claim。"
+  },
+  "delivery": {
+    "must_self_contained": true,
+    "external_ref_pattern": "src=\"(?!data:|https?:)",
+    "note": "硬红线。脱敏词表随场景变，见各 profile.delivery.desensitize_keywords。"
+  }
+}

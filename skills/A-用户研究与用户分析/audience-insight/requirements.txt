@@ -1,0 +1,16 @@
+# Community Insight 依赖
+# 安装：用项目 venv 的 pip 装入隔离环境，勿装全局
+#   {{PYTHON_ENV}}/Scripts/pip.exe install -r requirements.txt
+requests>=2.31
+scikit-learn>=1.3
+jieba>=0.42
+pandas>=2.0
+numpy>=1.24
+matplotlib>=3.7
+beautifulsoup4>=4.12
+
+# {{COMMUNITY_FORUM}} 采集(可选)：需浏览器渲染公开页面。装完还要下内核：
+#   playwright install chromium
+playwright>=1.40
+
+# 语义升级依赖未预设；如需启用，先做许可证、体积和数据边界评估。

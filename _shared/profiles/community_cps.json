@@ -1,0 +1,181 @@
+{
+  "id": "community_cps",
+  "name": "{{SERVER_LINE_A}} · 游戏社区/商城 · {{CHANNEL_E}}（CPS + H5 积分制）",
+  "extends": "base",
+  "note": "结构示例：所有数值均为演示用中性值，非任何真实项目数据。上线前按 config.example.yaml 填实际值，并把所有 {{...}} 占位符替换掉。",
+  "service_line": "{{SERVER_LINE_A}} {{PLATFORM_B}}",
+  "node": {
+    "type": "版本节点",
+    "activity_window": null,
+    "days": null,
+    "note": "H5 活动周期通常 {{BASELINE_VALUE}}天，可跨预热到爆发，不由版本日单点决定。"
+  },
+  "goal": [
+    "一键入库",
+    "CPS 转化",
+    "社区话题沉淀",
+    "新进"
+  ],
+  "budget": {
+    "cash": null,
+    "model": "资源采买 + CPS + 奖励采买",
+    "resource_cost": null,
+    "reference_band": null,
+    "over_requires_reason": null,
+    "baseline_ref": "工作总表：采买 {{BASELINE_VALUE}} + 奖励 {{BASELINE_VALUE}}（全盘最大单笔）",
+    "note": "与{{CHANNEL_TYPE_A}}「资源置换零采买」相反，这里采买是大头。预算讨论不是奖品讨论。"
+  },
+  "channels": [
+    {
+      "name": "{{CHANNEL_E}}",
+      "platform": "游戏社区 / 商城 APP",
+      "role": "转化+内容双担",
+      "cost_model": "CPS + 资源采买",
+      "capabilities": [
+        "一键入库",
+        "关注官号",
+        "分享活动",
+        "H5积分",
+        "CPS分销",
+        "KOC分发",
+        "跳转外链"
+      ],
+      "reportable": [
+        "一键入库人数",
+        "活动参与人数",
+        "关注官号人数",
+        "CPS销量",
+        "H5曝光",
+        "H5点击",
+        "KOC阅读"
+      ],
+      "primary_metric": "一键入库人数 / CPS 销量",
+      "no_participation_kpi": false,
+      "can_report_install": true,
+      "head_prize": false
+    }
+  ],
+  "channel_order": [
+    "{{CHANNEL_E}}"
+  ],
+  "weight": {
+    "enabled": false,
+    "note": "单渠道，无权重排序。prize_calc 的 PRIZE-04/05 与头奖份数权重检查在本档全部跳过。"
+  },
+  "prize": {
+    "model": "h5_points",
+    "bands": {},
+    "exceptions": [],
+    "card_denoms": [
+      50
+    ],
+    "structure": {
+      "card_ratio_min": null,
+      "head_per_channel_min": null,
+      "second_gt_head": false,
+      "check_bands": false
+    },
+    "count_by_budget": [],
+    "note": "积分兑奖制没有「头奖/第二档」梯度；价带、份数、卡占比、每渠道头奖等检查不适用。示例奖品组合必须按实际奖池替换。"
+  },
+  "task_kit": {
+    "derived_from": "capabilities",
+    "tasks": [
+      {
+        "name": "关注{{CHANNEL_E}}官号",
+        "when": "渠道有关注能力",
+        "rule": "积分制，完成即得积分",
+        "enabled": true
+      },
+      {
+        "name": "一键入库",
+        "when": "渠道有一键入库能力",
+        "rule": "积分制 + 抽奖加享",
+        "enabled": true
+      },
+      {
+        "name": "分享活动",
+        "when": "渠道有分享能力",
+        "rule": "积分制",
+        "enabled": true
+      },
+      {
+        "name": "加速达时长",
+        "when": "渠道有加速能力",
+        "enabled": false
+      }
+    ],
+    "reward": "积分兑换 + 抽奖次数（无加速福利）",
+    "note": "渠道没有加速能力，就不生成加速任务，也不要求「必得层用加速福利」。"
+  },
+  "metrics": {
+    "comparable": [
+      "一键入库人数",
+      "CPS销量",
+      "活动参与人数",
+      "H5点击",
+      "单客成本"
+    ],
+    "noncomparable": [
+      "曝光量",
+      "点击量",
+      "点赞收藏评论",
+      "KOC播放量",
+      "讨论量"
+    ],
+    "forbidden": [
+      {
+        "pattern": "页面点击率",
+        "level": "warn",
+        "applies_to": "all",
+        "why": "分母定义不一，且按钮位置可操纵。",
+        "allow_if_near": [
+          "废弃",
+          "改测",
+          "入库任务完成率"
+        ]
+      }
+    ],
+    "click_only": {},
+    "prebooking_false_claim": [],
+    "note": "关键差异：{{CHANNEL_E}}能回传「一键入库人数」，所以「入库人数」在这里不是禁用指标——v1.x 的全局禁用会对它误报。"
+  },
+  "schedule": {
+    "anchors": [
+      "T-30",
+      "T-14",
+      "T-7",
+      "T+0",
+      "收口"
+    ],
+    "risks": [
+      "CPS 上架未过 {{APPROVAL_PARTY}}审批",
+      "H5 活动页联调延期",
+      "采买资源位档期被占",
+      "KOC 内容质量波动",
+      "奖品缺货"
+    ],
+    "needs_de_approval": true,
+    "needs_version_delay_risk": false,
+    "note": "无 T-45（仅在涉及新 CDK 礼包时才需要）；H5 可独立起停，不强制要求「版本延期预案」。"
+  },
+  "delivery": {
+    "audience": "内部 + 渠道方（刊例/结案数据）",
+    "desensitize_keywords": [
+      "CPS 分成",
+      "内部预算",
+      "历史基线"
+    ],
+    "must_self_contained": true
+  },
+  "overrides_log": [
+    {
+      "date": "{{AS_OF_DATE}}",
+      "item": "整套检查",
+      "from": "{{CHANNEL_COUNT}}家{{CHANNEL_TYPE_A}}档",
+      "to": "单渠道社区档",
+      "why": "平台能力不同：有入库/无加速、采买为主/非置换、积分制/非梯度奖池、单渠道/无权重"
+    }
+  ],
+  "_fill_hint": "本文件是机读配置模板：填完占位符、把中性示例值换成你的实际值后才能跑脚本；字段含义见 01-占位符字典.md 与 README「场景档」一节。"
+}

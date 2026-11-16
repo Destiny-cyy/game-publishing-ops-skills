@@ -1,0 +1,9 @@
+user_tag,server_line,device,recency_days,freq,value
+u01,{{SERVER_LINE_A}},PC,2,8,3
+u02,{{SERVER_LINE_A}},PC,5,4,2
+u03,{{SERVER_LINE_A}},PC,1,9,4
+u04,{{SERVER_LINE_A}},移动端,12,2,1
+u05,{{SERVER_LINE_A}},PC,3,7,3
+u06,{{SERVER_LINE_A}},PC,18,1,1
+u07,{{SERVER_LINE_A}},移动端,6,5,2
+u08,{{SERVER_LINE_A}},PC,9,3,2

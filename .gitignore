@@ -1,0 +1,16 @@
+# Source-project review records retained locally but excluded from public Git history.
+skills/E-运营方案/activity-page-design/references/naming-and-terms.md
+skills/E-运营方案/activity-page-design/references/retro-and-path.md
+
+# Runtime data and generated outputs may contain real user or campaign data.
+**/data/*
+!**/data/README.md
+**/output/*
+!**/output/README.md
+**/out/
+__pycache__/
+*.py[cod]
+*.log
+*.tmp
+.DS_Store
+Thumbs.db

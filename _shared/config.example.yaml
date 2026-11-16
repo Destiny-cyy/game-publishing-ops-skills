@@ -1,0 +1,76 @@
+# config.example.yaml — 复制为 config.yaml 后填写
+# 每个占位符的「类型 / 说明 / 示例」见 01-占位符字典.md
+# 规则：不要在包内文件里逐个改真值，先在这里集中填，再按字典替换。
+
+项目标识:
+  游戏中文名: "{{GAME_CN}}"
+  游戏英文名: "{{GAME_EN}}"
+  游戏英文检索词: "{{GAME_KEYWORD}}"
+  品类与美术调性: "{{GAME_GENRE}}"
+  本期版本名: "{{VERSION_NAME}}"
+  历史版本名: "{{VERSION_NAME_HIST}}"
+  对标游戏A: "{{BENCHMARK_GAME_A}}"
+  对标游戏B: "{{BENCHMARK_GAME_B}}"
+  同品类参照游戏: "{{BENCHMARK_GAME_C}}"
+
+节点与服线:
+  节点性质: "{{NODE_TYPE}}"          # 枚举：预约期 / 版本上线周 / 长线运营期
+  主服线: "{{SERVER_LINE_A}}"
+  次服线: "{{SERVER_LINE_B}}"
+  活动周期: "{{ACTIVITY_WINDOW}}"
+
+渠道与平台:
+  渠道数量: "{{CHANNEL_COUNT}}"
+  渠道A: "{{CHANNEL_A}}"            # 按资源量降序填，用代号不用真名
+  渠道B: "{{CHANNEL_B}}"
+  渠道C: "{{CHANNEL_C}}"
+  渠道D: "{{CHANNEL_D}}"
+  渠道E: "{{CHANNEL_E}}"
+  平台A: "{{PLATFORM_A}}"
+  平台B: "{{PLATFORM_B}}"
+  平台站点: "{{PLATFORM_SITE}}"
+  媒体渠道: "{{MEDIA_CHANNEL}}"
+
+数据与工具:
+  数据来源: "{{DATA_SOURCE}}"
+  在线表格工具: "{{TABLE_TOOL}}"
+  在线文档工具: "{{DOC_TOOL}}"
+  协作平台: "{{COLLAB_PLATFORM}}"
+  表格CLI: "{{TABLE_TOOL_CLI}}"
+  文档ID: "{{DOC_ID}}"
+  文档URL: "{{DOC_URL}}"
+  素材CDN域名: "{{CDN_HOST}}"
+  社区视频源: "{{COMMUNITY_VIDEO}}"
+  社区视频API域名: "{{COMMUNITY_VIDEO_API_HOST}}"
+  社区视频搜索路径: "{{COMMUNITY_VIDEO_SEARCH_PATH}}"
+  社区视频评论路径: "{{COMMUNITY_VIDEO_COMMENTS_PATH}}"
+  社区论坛源: "{{COMMUNITY_FORUM}}"
+  社区论坛板块: "{{COMMUNITY_FORUM_SECTION}}"
+  游戏数据API: "{{GAME_DATA_API}}"
+
+环境与角色:
+  工作目录: "{{WORK_DIR}}"
+  Python环境: "{{PYTHON_ENV}}"
+  负责角色: "{{OWNER_ROLE}}"
+  审批方: "{{APPROVAL_PARTY}}"
+  研发方: "{{DEVELOPER}}"
+
+内部口径（外发前必须删除）:
+  总预算: "{{BUDGET_AMOUNT}}"
+  曝光目标: "{{KPI_REACH}}"
+  参与目标: "{{KPI_PARTICIPATION}}"
+  单客成本目标: "{{KPI_UNIT_COST}}"
+  奖品总份数: "{{PRIZE_COUNT}}"
+  历史基线_曝光: "{{BASELINE_REACH_A}}"
+  历史基线_参与: "{{BASELINE_PARTICIPATION_A}}"
+  历史基线_CTR分层: "{{BASELINE_CTR_TIER}}"
+  有效样本量: "{{SAMPLE_N}}"
+
+用户研究分析（v1.1 起，做研究才填）:
+  研究问题: "{{RESEARCH_QUESTION}}"
+  分群命名: "{{SEGMENT_LABEL}}"
+  数据缺口声明: "{{DATA_GAP}}"
+  结论置信度: "{{CONFIDENCE_LEVEL}}"     # 枚举：高 / 中 / 低
+  策略分档: "{{STRATEGY_TIER}}"          # 枚举：可立即执行 / 需验证 / 仅观测
+  用户触点: "{{TOUCHPOINT}}"
+  情感词典文件: "{{SENTIMENT_LEXICON_FILE}}"

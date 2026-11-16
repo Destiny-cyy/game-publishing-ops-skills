@@ -1,0 +1,472 @@
+{
+  "id": "channel_prebook",
+  "name": "{{SERVER_LINE_A}} · 预约期 · {{CHANNEL_TYPE_A}}{{CHANNEL_COUNT}}家（{{VERSION_NAME}} 当前场景）",
+  "extends": "base",
+  "note": "结构示例：所有数值均为演示用中性值，非任何真实项目数据。上线前按 config.example.yaml 填实际值，并把所有 {{...}} 占位符替换掉。",
+  "service_line": "{{SERVER_LINE_A}} {{PLATFORM_B}}",
+  "node": {
+    "type": "预约期",
+    "date": "{{AS_OF_DATE}}",
+    "version_date": "{{AS_OF_DATE}}",
+    "activity_window": "{{AS_OF_DATE}}~{{AS_OF_DATE}}",
+    "days": 7,
+    "t_basis": "{{AS_OF_DATE}}",
+    "note": "预约日 ≠ 版本日。版本日 版本周另案，预算按不低于{{VERSION_NAME_HIST}} {{BUDGET_AMOUNT}} 定档。"
+  },
+  "goal": [
+    "预约页导流",
+    "新进",
+    "回流",
+    "保住在线"
+  ],
+  "budget": {
+    "cash": 10000,
+    "model": "奖品采买（资源置换，资源位零采买）",
+    "resource_cost": 0,
+    "reference_band": [
+      10000,
+      10000
+    ],
+    "over_requires_reason": 10000,
+    "baseline_ref": "{{VERSION_NAME_HIST}} {{BUDGET_AMOUNT}} / {{BASELINE_VALUE}} 份（卡与外设占比见 `{{BASELINE_VALUE}}`）",
+    "note": "相对上一版本节点的预算比例由 {{BASELINE_VALUE}} 配置。超出参考带要给理由，不是自动判错。"
+  },
+  "reality": {
+    "audience_source": "{{AUDIENCE_ANALYSIS_OUTPUT}}",
+    "audience_note": "以下是合成人群示例，不代表真实项目；使用时替换为带样本量、时点和来源的分析结果。讨论声量占比不等于人口比例。",
+    "group_share_pct": {
+      "拉新": 40.0,
+      "回流": 35.0,
+      "留存": 25.0
+    },
+    "audience_facts": [
+      {
+        "cluster": 0,
+        "label": "新用户示例组",
+        "share_pct": 40.0,
+        "size": 40,
+        "goal": "拉新",
+        "keywords": "入门/教程/体验/引导",
+        "guard": "合成样例；替换后才能形成业务结论"
+      },
+      {
+        "cluster": 1,
+        "label": "回流用户示例组",
+        "share_pct": 35.0,
+        "size": 35,
+        "goal": "回流",
+        "keywords": "版本/回归/变化/奖励",
+        "guard": "合成样例；不得描述为真实用户占比"
+      },
+      {
+        "cluster": 2,
+        "label": "活跃用户示例组",
+        "share_pct": 25.0,
+        "size": 25,
+        "goal": "留存",
+        "keywords": "活动/进度/社交/内容",
+        "guard": "合成样例；主题词需由实际语料生成"
+      }
+    ],
+    "playbook_guard": [
+      "示例占比仅用于验证数据结构，不得写入真实方案",
+      "替换后仍须区分讨论声量与人口比例",
+      "真实人群结论必须标样本量、时点、来源与证据等级"
+    ]
+  },
+  "channels": [
+    {
+      "name": "{{CHANNEL_B}}",
+      "platform": "{{CHANNEL_TYPE_A}} PC",
+      "role": "主阵地·规模盘",
+      "cost_model": "资源置换",
+      "capabilities": [
+        "一键入库",
+        "加速时长",
+        "回归定向",
+        "去重报数",
+        "跳转外链待确认"
+      ],
+      "reportable": [
+        "活动参与人数",
+        "入库任务完成率",
+        "新进加速人数",
+        "回归加速人数",
+        "曝光PV"
+      ],
+      "primary_metric": "活动参与人数",
+      "no_participation_kpi": false,
+      "head_prize": true
+    },
+    {
+      "name": "{{CHANNEL_A}}",
+      "platform": "{{CHANNEL_TYPE_A}} PC+移动",
+      "role": "存量池·触达盘",
+      "cost_model": "资源置换",
+      "capabilities": [
+        "一键入库",
+        "加速时长",
+        "push触达",
+        "跳转外链待确认"
+      ],
+      "reportable": [
+        "push曝光",
+        "活动页进入人数",
+        "加速人数环比"
+      ],
+      "primary_metric": "push→活动页进入 + 加速环比",
+      "no_participation_kpi": true,
+      "note": "活动页承接弱，不以参与规模考核。",
+      "head_prize": true
+    },
+    {
+      "name": "{{CHANNEL_D}}",
+      "platform": "{{CHANNEL_TYPE_A}} PC",
+      "role": "高效位·转化盘",
+      "cost_model": "资源置换",
+      "capabilities": [
+        "一键入库",
+        "加速时长",
+        "新用户加速识别",
+        "跳转外链待确认"
+      ],
+      "reportable": [
+        "资源位曝光",
+        "资源位点击",
+        "活动页UV",
+        "活动参与人数",
+        "新用户加速必得"
+      ],
+      "primary_metric": "入库任务完成率",
+      "no_participation_kpi": false,
+      "note": "加速页 bn（CTR {{BASELINE_VALUE}}）与活动中心 bn（{{BASELINE_VALUE}}）分层，铺量位不考核 CTR。",
+      "head_prize": true
+    },
+    {
+      "name": "{{CHANNEL_C}}",
+      "platform": "{{CHANNEL_TYPE_A}} 移动为主",
+      "role": "移动端·增量盘",
+      "cost_model": "资源置换",
+      "capabilities": [
+        "加速时长",
+        "移动端跨端需H5中间页",
+        "KOC分发"
+      ],
+      "reportable": [
+        "抽奖人次",
+        "PC端PV",
+        "移动端PV",
+        "KOC播放量"
+      ],
+      "primary_metric": "抽奖人次（单列，不并入参与人数合计）",
+      "no_participation_kpi": false,
+      "report_human_count_only": true,
+      "head_prize": true,
+      "aliases": [
+        "{{CHANNEL_C}}",
+        "{{CHANNEL_C}}{{CHANNEL_TYPE_A}}"
+      ]
+    }
+  ],
+  "channel_order": [
+    "{{CHANNEL_B}}",
+    "{{CHANNEL_A}}",
+    "{{CHANNEL_D}}",
+    "{{CHANNEL_C}}"
+  ],
+  "channel_order_note": "做表顺序照业务原表，与正文渠道卡顺序不必一致。换渠道时改数组即可。",
+  "weight": {
+    "enabled": true,
+    "order": [
+      "{{CHANNEL_A}}",
+      "{{CHANNEL_B}}",
+      "{{CHANNEL_C}}",
+      "{{CHANNEL_D}}"
+    ],
+    "equal_pairs": [
+      [
+        "{{CHANNEL_B}}",
+        "{{CHANNEL_C}}"
+      ]
+    ],
+    "tolerance": 100,
+    "card_pool_span_pp": 10,
+    "note": "同级＝两家合计差额 ≤{{BUDGET_AMOUNT}}（已在方案中确认），不是精确等额。卡金额仍须严格同序、占卡池跨度 ≤10pp。单渠道或无权重场景把 enabled 改 false。"
+  },
+  "prize": {
+    "model": "lottery_tiers",
+    "bands": {
+      "头奖": [
+        479,
+        700
+      ],
+      "第二档": [
+        319,
+        450
+      ]
+    },
+    "exceptions": [
+      {
+        "price": 479,
+        "item": "示例鼠标 A {{BUDGET_AMOUNT}}",
+        "channel": "{{CHANNEL_D}}",
+        "why": "鼠标品类在 {{BUDGET_AMOUNT}}~700 带内无合适款（示例鼠标 B {{BUDGET_AMOUNT}} 超上限），且{{CHANNEL_D}}权重最低；已在方案中确认。"
+      },
+      {
+        "price": 720,
+        "item": "{{BUDGET_AMOUNT}}（历史沿革数字）",
+        "channel": "-",
+        "why": "准则/正文里回顾 v3 价带与被否的高价方案时出现，不是当期头奖；登记以免体检把说明性数字当成违规。"
+      }
+    ],
+    "exclude_types": [
+      "CDK"
+    ],
+    "exclude_note": "CDK 为已购库存，准则规定不列支、不进渠道汇总。别的场景若要计入，把本项改成 []。",
+    "card_denoms": [
+      30,
+      60,
+      150
+    ],
+    "structure": {
+      "card_ratio_min": 0.6,
+      "head_per_channel_min": 1,
+      "second_gt_head": true,
+      "check_bands": true,
+      "take_modulus_precheck": true
+    },
+    "count_by_budget": [
+      {
+        "band": [
+          10000,
+          10000
+        ],
+        "head": 4,
+        "second": "6~8",
+        "card_ratio": [
+          0.66,
+          0.7
+        ],
+        "ref": "{{VERSION_NAME}} v6 {{BUDGET_AMOUNT}}"
+      },
+      {
+        "band": [
+          10000,
+          10000
+        ],
+        "head": 4,
+        "second": "7~8",
+        "card_ratio": [
+          0.66,
+          0.7
+        ],
+        "ref": "{{VERSION_NAME_HIST}} 的{{VERSION_NAME_HIST}} {{BUDGET_AMOUNT}}"
+      },
+      {
+        "band": [
+          10000,
+          10000
+        ],
+        "head": 4,
+        "second": 8,
+        "card_ratio": [
+          0.68,
+          0.72
+        ],
+        "ref": "{{VERSION_NAME_HIST}}{{VERSION_NAME_HIST}} {{BUDGET_AMOUNT}}"
+      },
+      {
+        "band": [
+          10000,
+          10000
+        ],
+        "head": 12,
+        "second": 16,
+        "card_ratio": [
+          0.5,
+          0.55
+        ],
+        "ref": "{{VERSION_NAME}} v3/（示例版本，请替换）"
+      }
+    ],
+    "note": "份数按实际盘子插值取档；盘子超标先看结构再砍卡。同款跨渠道第二档可接受，只约束头奖品类互异。"
+  },
+  "task_kit": {
+    "derived_from": "capabilities",
+    "tasks": [
+      {
+        "name": "预约 {{VERSION_NAME}} 版本（点击跳转官网预约页）",
+        "when": "node.type == 预约期 且 渠道能跳外链",
+        "rule": "抽奖×2、点击即计、置首屏第一格；移动端需 H5 中间页",
+        "enabled": true
+      },
+      {
+        "name": "关注官方账号",
+        "when": "渠道有关注能力",
+        "enabled": true
+      },
+      {
+        "name": "一键入库",
+        "when": "渠道有一键入库能力",
+        "rule": "放活动页首屏第一格",
+        "enabled": true
+      },
+      {
+        "name": "加速达时长",
+        "when": "渠道有加速能力",
+        "rule": "必得层用渠道自有加速福利，零现金成本",
+        "enabled": true
+      }
+    ],
+    "reward": "抽奖机会 + 加速福利",
+    "channel_variants": {
+      "{{CHANNEL_E}}": "H5 积分制：关注 / 入库 / 分享 → 积分兑奖（无加速任务）",
+      "{{CHANNEL_D}}": "入库 + 首次加速 + 加速达 15/60 分钟（无关注任务）",
+      "{{CHANNEL_B}}/{{CHANNEL_A}}": "关注社媒 + 入库 + 加速达时长",
+      "{{CHANNEL_C}}": "PC+移动双端 + KOC 分发，跨端跳预约页需 H5 中间页"
+    },
+    "note": "件套数不是规定，是能力交集。渠道没有某项能力就不生成该任务。"
+  },
+  "metrics": {
+    "comparable": [
+      "预约页跳转",
+      "活动参与人数",
+      "加速人数环比",
+      "新进加速人数",
+      "回归加速人数",
+      "入库任务完成率",
+      "单客奖品成本",
+      "CDK 核销率"
+    ],
+    "noncomparable": [
+      "曝光量",
+      "点击量",
+      "PV",
+      "抽奖人次",
+      "播放量",
+      "讨论量"
+    ],
+    "forbidden": [
+      {
+        "pattern": "入库人数",
+        "level": "warn",
+        "applies_to": "不能回传入库结果的渠道",
+        "unless_any_channel_can_report": "install",
+        "why": "{{CHANNEL_TYPE_A}}侧统计不到 平台入库结果，只能测页面点击。若本场景含能回传入库人数的渠道（{{CHANNEL_E}} / CPS），这条禁用自动失效。",
+        "allow_if_near": [
+          "入库任务完成率",
+          "替代",
+          "统计不到",
+          "不作验收"
+        ]
+      },
+      {
+        "pattern": "页面点击率",
+        "level": "warn",
+        "applies_to": "all",
+        "why": "现已废弃：分母{{CHANNEL_COUNT}}家定义不一，且按钮位置可直接操纵 CTR。改测入库任务完成率。",
+        "allow_if_near": [
+          "废弃",
+          "改测",
+          "入库任务完成率",
+          "操纵"
+        ]
+      },
+      {
+        "pattern": "曝光率",
+        "level": "info",
+        "applies_to": "all",
+        "why": "履约指标，不应占效果 KPI 位置；须先锁定承诺曝光量这个分母。",
+        "allow_if_near": [
+          "履约",
+          "承诺曝光量",
+          "移出"
+        ]
+      }
+    ],
+    "click_only": {
+      "预约页跳转": {
+        "count_rule": "点击即计，不要求完成预约登记",
+        "must_confirm_at": "T-30",
+        "confirm_item": "渠道能否回传跳转外部链接的计数",
+        "fallback": "降为观测项，改由活动页 UV × 已知点击率估算，并在结案写明降级路径"
+      }
+    },
+    "prebooking_false_claim": [
+      "版本已上线",
+      "现已开放",
+      "全新版本",
+      "已开启下载"
+    ],
+    "prebooking_note": "只在 node.type == 预约期 时启用；版本周写「版本已上线」是事实，不判违规。"
+  },
+  "schedule": {
+    "anchors": [
+      "T-45",
+      "T-30",
+      "T-21",
+      "T-14",
+      "T-7",
+      "T-1",
+      "T+0",
+      "T+4"
+    ],
+    "risks": [
+      "版本延期",
+      "CDK 核销不及预期",
+      "实物缺货涨价",
+      "资源位被挤占",
+      "回归目标落空",
+      "预估实测偏差 >30%",
+      "素材触社区红线",
+      "预约页跳转无法埋点",
+      "素材被写成版本已上线"
+    ],
+    "needs_de_approval": true,
+    "needs_version_delay_risk": true,
+    "t30_actions": [
+      "事实核对（版本日期 + 节点性质）",
+      "资源位档期锁定",
+      "书面承诺曝光量",
+      "回归人群定向能力",
+      "跳转类指标能否回传"
+    ]
+  },
+  "delivery": {
+    "audience": "内部为主，外发给{{CHANNEL_COUNT}}家渠道方需脱敏",
+    "desensitize_keywords": [
+      "环比",
+      "历史基线",
+      "参与人数",
+      "加速人数",
+      "核销率",
+      "{{CHANNEL_COUNT}}家权重",
+      "KPI 拆解"
+    ],
+    "must_self_contained": true
+  },
+  "overrides_log": [
+    {
+      "date": "{{AS_OF_DATE}}",
+      "item": "weight.equal_pairs 同级判定",
+      "from": "精确等额",
+      "to": "差额 ≤{{BUDGET_AMOUNT}}",
+      "why": "精确等号把 {{CHANNEL_C}} 三档压扁、逼出{{CHANNEL_D}}不设第二档，成了结构枷锁（已在方案中确认）"
+    },
+    {
+      "date": "{{AS_OF_DATE}}",
+      "item": "prize.bands.头奖",
+      "from": "[{{BASELINE_VALUE}},{{BASELINE_VALUE}}]",
+      "to": "[{{BASELINE_VALUE}},{{BASELINE_VALUE}}] + 例外登记",
+      "why": "{{BUDGET_AMOUNT}} 越红线、{{CHANNEL_D}} {{BUDGET_AMOUNT}} 是鼠标品类无合适款的实际解"
+    },
+    {
+      "date": "{{AS_OF_DATE}}",
+      "item": "节点性质",
+      "from": "早期误写节点",
+      "to": "预约期 {{ACTIVITY_WINDOW}}，版本日 版本日",
+      "why": "事实锚点更正，投入档位与任务链随之全变"
+    }
+  ],
+  "_fill_hint": "本文件是机读配置模板：填完占位符、把中性示例值换成你的实际值后才能跑脚本；字段含义见 01-占位符字典.md 与 README「场景档」一节。"
+}

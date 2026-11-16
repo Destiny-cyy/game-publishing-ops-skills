@@ -1,0 +1,207 @@
+{
+  "id": "platform_resource",
+  "name": "{{SERVER_LINE_B}} · {{PLATFORM_A}} 平台资源位（轮播 + 预约 H5）",
+  "extends": "base",
+  "note": "结构示例：所有数值均为演示用中性值，非任何真实项目数据。上线前按 config.example.yaml 填实际值，并把所有 {{...}} 占位符替换掉。",
+  "service_line": "{{SERVER_LINE_B}} {{PLATFORM_A}}",
+  "node": {
+    "type": "版本节点",
+    "activity_window": null,
+    "days": null
+  },
+  "goal": [
+    "平台内发现",
+    "预约",
+    "下载激活"
+  ],
+  "budget": {
+    "cash": null,
+    "model": "平台资源位（按排期 / 虚拟金，非采买谈判）",
+    "resource_cost": 0,
+    "reference_band": null,
+    "over_requires_reason": null,
+    "baseline_ref": null,
+    "note": "预算口径与另外两条线都不同，不套用{{CHANNEL_TYPE_A}}的 {{BUDGET_AMOUNT}}k~35k 参考带。"
+  },
+  "channels": [
+    {
+      "name": "首帧-全量",
+      "platform": "{{PLATFORM_A}} 轮播",
+      "role": "节点爆发拉量",
+      "cost_model": "平台排期",
+      "capabilities": [
+        "曝光",
+        "点击"
+      ],
+      "reportable": [
+        "曝光量",
+        "CTR",
+        "预约数"
+      ],
+      "primary_metric": "CTR",
+      "ctr": 0.56,
+      "note": "曝光上限与回传延迟均由平台实际规则决定，填写 {{BASELINE_VALUE}} 与 {{REPORTING_DELAY}} 后使用。"
+    },
+    {
+      "name": "非首帧(2-7帧)-全量",
+      "platform": "{{PLATFORM_A}} 轮播",
+      "role": "中期主力",
+      "cost_model": "平台排期",
+      "capabilities": [
+        "曝光",
+        "点击"
+      ],
+      "reportable": [
+        "曝光量",
+        "CTR",
+        "预约数"
+      ],
+      "primary_metric": "CTR",
+      "ctr": 0.63,
+      "note": "曝光 {{BASELINE_VALUE}}，月占比已升至 {{BASELINE_VALUE}}。"
+    },
+    {
+      "name": "定向位",
+      "platform": "{{PLATFORM_A}} 轮播",
+      "role": "高效率位",
+      "cost_model": "自供号码包",
+      "capabilities": [
+        "人群定向",
+        "曝光",
+        "点击"
+      ],
+      "reportable": [
+        "曝光量",
+        "CTR",
+        "预约数"
+      ],
+      "primary_metric": "CTR",
+      "ctr": "0.90~1.17",
+      "note": "定向倍率由平台实际规则决定；委托平台数据团队提取人群包时不得指定其他具体游戏的玩家。"
+    },
+    {
+      "name": "生态池非首帧",
+      "platform": "{{PLATFORM_A}} 生态位",
+      "role": "补量",
+      "cost_model": "平台排期",
+      "capabilities": [
+        "曝光",
+        "点击"
+      ],
+      "reportable": [
+        "曝光量",
+        "CTR"
+      ],
+      "primary_metric": "CTR",
+      "note": "曝光范围填写 {{BASELINE_VALUE}}；竞争程度与优先级须按实际平台数据判断。"
+    },
+    {
+      "name": "官网预约 H5",
+      "platform": "自有 H5",
+      "role": "预约承接",
+      "cost_model": "自建",
+      "capabilities": [
+        "预约登记",
+        "跳转"
+      ],
+      "reportable": [
+        "预约人数",
+        "H5 UV"
+      ],
+      "primary_metric": "预约人数"
+    }
+  ],
+  "channel_order": [
+    "首帧-全量",
+    "非首帧(2-7帧)-全量",
+    "定向位",
+    "生态池非首帧",
+    "官网预约 H5"
+  ],
+  "weight": {
+    "enabled": false,
+    "note": "资源位按 CVR 权重选位，不是按渠道金额分配权重。prize 整套检查关闭。"
+  },
+  "prize": {
+    "model": "platform_reward",
+    "bands": {},
+    "exceptions": [],
+    "card_denoms": [],
+    "structure": {
+      "card_ratio_min": null,
+      "head_per_channel_min": null,
+      "second_gt_head": false,
+      "check_bands": false
+    },
+    "count_by_budget": [],
+    "note": "{{SERVER_LINE_B}}预约活动的奖励走平台规则，没有 平台充值卡 / 外设梯度这一套。"
+  },
+  "task_kit": {
+    "derived_from": "capabilities",
+    "tasks": [
+      {
+        "name": "预约版本",
+        "when": "有预约 H5",
+        "enabled": true
+      },
+      {
+        "name": "下载 / 激活",
+        "when": "平台内可完成",
+        "enabled": true
+      }
+    ],
+    "reward": "平台预约奖励",
+    "note": "无入库（{{SERVER_LINE_B}}不走 {{PLATFORM_A}}）、无加速（{{SERVER_LINE_B}}无网络门槛）。"
+  },
+  "metrics": {
+    "comparable": [
+      "预约人数",
+      "CTR",
+      "下载激活数"
+    ],
+    "noncomparable": [
+      "曝光量",
+      "讨论量",
+      "播放量"
+    ],
+    "forbidden": [],
+    "click_only": {},
+    "prebooking_false_claim": [],
+    "note": "CTR 在这里是主指标（平台能统一回传分母），与{{CHANNEL_TYPE_A}}侧「CTR 不可考核」不冲突——分母可控性不同。"
+  },
+  "schedule": {
+    "anchors": [
+      "T-30",
+      "T-14",
+      "T+0",
+      "{{REPORTING_DELAY}}"
+    ],
+    "risks": [
+      "轮播排期未拿到",
+      "回传延迟 {{REPORTING_DELAY}} 可能导致爆发错位",
+      "定向号码包提取违规",
+      "预约 H5 联调延期"
+    ],
+    "needs_de_approval": false,
+    "needs_version_delay_risk": true,
+    "note": "无 {{APPROVAL_PARTY}} 审批时不套用审批锚点；有版本日则保留版本延期预案；回传延迟使用 {{REPORTING_DELAY}} 配置。"
+  },
+  "delivery": {
+    "audience": "内部（平台侧材料另走平台规范）",
+    "desensitize_keywords": [
+      "号码包",
+      "内部 CTR 基线"
+    ],
+    "must_self_contained": true
+  },
+  "overrides_log": [
+    {
+      "date": "{{AS_OF_DATE}}",
+      "item": "整套检查",
+      "from": "{{SERVER_LINE_A}}{{CHANNEL_TYPE_A}}档",
+      "to": "{{SERVER_LINE_B}}平台位档",
+      "why": "服线、平台、成本模型、可回传指标、审批链全部不同"
+    }
+  ],
+  "_fill_hint": "本文件是机读配置模板：填完占位符、把中性示例值换成你的实际值后才能跑脚本；字段含义见 01-占位符字典.md 与 README「场景档」一节。"
+}

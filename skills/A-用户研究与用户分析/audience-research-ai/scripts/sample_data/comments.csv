@@ -1,0 +1,10 @@
+id,source,text,user_tag,timestamp,server_line,device
+C01,社区讨论,入口找不到，一进来不知道点哪,u01,D1,{{SERVER_LINE_A}},PC
+C02,社区讨论,任务有点多，说明再清楚点就好了,u02,D1,{{SERVER_LINE_A}},PC
+C03,问卷开放题,首屏那句说明挺清楚的,u03,D2,{{SERVER_LINE_A}},PC
+C04,社区讨论,找了半天才看到入库按钮,u04,D2,{{SERVER_LINE_A}},移动端
+C05,访谈纪要,要是能一眼看到要做什么就好了,u05,D3,{{SERVER_LINE_A}},PC
+C06,社区讨论,引导写得挺贴心，但按钮太靠下,u06,D3,{{SERVER_LINE_A}},PC
+C07,社区讨论,入口找不到，一进来不知道点哪,u01,D1,{{SERVER_LINE_A}},PC
+C08,问卷开放题,说明有点绕，看了两遍,u07,D4,{{SERVER_LINE_A}},移动端
+C09,社区讨论,,u08,D4,{{SERVER_LINE_A}},PC

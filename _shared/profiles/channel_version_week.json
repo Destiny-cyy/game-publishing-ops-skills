@@ -1,0 +1,141 @@
+{
+  "id": "channel_version_week",
+  "name": "{{SERVER_LINE_A}} · 版本周 · {{CHANNEL_TYPE_A}}{{CHANNEL_COUNT}}家",
+  "extends": "channel_prebook",
+  "note": "结构示例：所有数值均为演示用中性值，非任何真实项目数据。上线前按 config.example.yaml 填实际值，并把所有 {{...}} 占位符替换掉。",
+  "node": {
+    "type": "版本周",
+    "date": null,
+    "version_date": null,
+    "activity_window": null,
+    "days": 7,
+    "note": "T = 版本上线日。版本日 ≠ 预约日，本档不需要预约跳转任务，也不需要「不得写已上线」的文案红线。"
+  },
+  "goal": [
+    "新进",
+    "回流",
+    "承接下载与登录",
+    "持续在线"
+  ],
+  "budget": {
+    "cash": null,
+    "model": "奖品采买（资源置换）",
+    "resource_cost": 0,
+    "reference_band": [
+      10000,
+      10000
+    ],
+    "over_requires_reason": 10000,
+    "baseline_ref": "{{VERSION_NAME_HIST}} {{BUDGET_AMOUNT}}（100% 档）",
+    "note": "版本周按 100% 定档；大版本周另案，不低于上一版版本节点。"
+  },
+  "task_kit": {
+    "tasks": [
+      {
+        "name": "关注官方账号",
+        "when": "渠道有关注能力",
+        "enabled": true
+      },
+      {
+        "name": "一键入库",
+        "when": "渠道有一键入库能力",
+        "rule": "放首屏第一格",
+        "enabled": true
+      },
+      {
+        "name": "加速达时长",
+        "when": "渠道有加速能力",
+        "rule": "必得层用加速福利",
+        "enabled": true
+      },
+      {
+        "name": "预约版本（点击跳转）",
+        "when": "node.type == 预约期",
+        "enabled": false
+      }
+    ],
+    "reward": "抽奖机会 + 加速福利",
+    "note": "回到三件套。预约跳转任务随节点性质插拔，不是固定四件套。"
+  },
+  "metrics": {
+    "comparable": [
+      "新进加速人数",
+      "回归加速人数",
+      "入库任务完成率",
+      "加速人数环比",
+      "活动参与人数",
+      "单客奖品成本",
+      "CDK 核销率"
+    ],
+    "noncomparable": [
+      "曝光量",
+      "点击量",
+      "PV",
+      "抽奖人次",
+      "播放量",
+      "讨论量"
+    ],
+    "forbidden": [
+      {
+        "pattern": "页面点击率",
+        "level": "warn",
+        "applies_to": "all",
+        "why": "现已废弃，分母不可控且位置可操纵 CTR。",
+        "allow_if_near": [
+          "废弃",
+          "改测",
+          "入库任务完成率",
+          "操纵"
+        ]
+      },
+      {
+        "pattern": "曝光率",
+        "level": "info",
+        "applies_to": "all",
+        "why": "履约指标，不占效果 KPI 位置。",
+        "allow_if_near": [
+          "履约",
+          "承诺曝光量",
+          "移出"
+        ]
+      }
+    ],
+    "click_only": {},
+    "prebooking_false_claim": [],
+    "prebooking_note": "版本周不启用预约期禁用词——「版本已上线」在此是事实。"
+  },
+  "schedule": {
+    "anchors": [
+      "T-45",
+      "T-30",
+      "T-21",
+      "T-14",
+      "T-7",
+      "T-1",
+      "T+0",
+      "T+4"
+    ],
+    "risks": [
+      "版本延期",
+      "CDK 核销不及预期",
+      "实物缺货涨价",
+      "版本日资源位被挤占",
+      "回归目标落空",
+      "预估实测偏差 >30%",
+      "素材触社区红线",
+      "版本日带宽挤占"
+    ],
+    "needs_de_approval": true,
+    "needs_version_delay_risk": true
+  },
+  "overrides_log": [
+    {
+      "date": "{{AS_OF_DATE}}",
+      "item": "task_kit / metrics.prebooking_false_claim / budget",
+      "from": "预约期档",
+      "to": "版本周档",
+      "why": "节点性质决定任务链与指标，不是改个日期就行（准则 3.2）"
+    }
+  ],
+  "_fill_hint": "本文件是机读配置模板：填完占位符、把中性示例值换成你的实际值后才能跑脚本；字段含义见 01-占位符字典.md 与 README「场景档」一节。"
+}

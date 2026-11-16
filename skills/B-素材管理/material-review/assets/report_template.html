@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{{游戏名}} · {{渠道}} {{时间范围}}素材复盘与{{下月}}资源规划</title>
+<style>
+  :root{--bg:#0d1117;--card:#161b22;--card2:#1c2330;--line:#2d3748;--txt:#e6edf3;--sub:#9aa7b5;--green:#3fb950;--red:#f85149;--gold:#e3b341;--blue:#58a6ff;--purple:#bc8cff;}
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{background:var(--bg);color:var(--txt);font-family:"PingFang SC","Microsoft YaHei",sans-serif;line-height:1.65;padding:32px 20px;}
+  .wrap{max-width:1060px;margin:0 auto;}
+  h1{font-size:26px;margin:4px 0 6px;}
+  .meta{font-size:12.5px;color:var(--sub);}
+  .chips{display:flex;flex-wrap:wrap;gap:10px;margin:18px 0 26px;}
+  .chip{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:10px 16px;font-size:13.5px;}
+  .chip b{font-size:16px;}
+  .up{color:var(--green);font-weight:600;} .down{color:var(--red);font-weight:600;} .gold{color:var(--gold);font-weight:600;} .blue{color:var(--blue);font-weight:600;}
+  h2{font-size:17px;margin:34px 0 14px;padding-left:10px;border-left:4px solid var(--blue);}
+  .cbox{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px 20px;font-size:14.5px;margin-bottom:12px;}
+  .tag{display:inline-block;font-size:12px;padding:2px 10px;border-radius:20px;margin-right:8px;font-weight:600;}
+  .t-g{background:rgba(63,185,80,.15);color:var(--green);} .t-b{background:rgba(88,166,255,.15);color:var(--blue);}
+  .t-p{background:rgba(188,140,255,.15);color:var(--purple);} .t-y{background:rgba(227,179,65,.15);color:var(--gold);}
+  .cbox p{margin-top:6px;color:var(--sub);font-size:13.5px;}
+  table{width:100%;border-collapse:collapse;font-size:13.5px;background:var(--card);border-radius:12px;overflow:hidden;margin-bottom:10px;}
+  th{background:var(--card2);color:var(--sub);font-weight:600;text-align:left;padding:10px 14px;font-size:12.5px;}
+  td{padding:10px 14px;border-top:1px solid var(--line);}
+  td.num,th.num{text-align:right;font-variant-numeric:tabular-nums;}
+  .good{color:var(--green);font-weight:600;} .bad{color:var(--red);font-weight:600;} .warn{color:var(--gold);}
+  .act{background:linear-gradient(135deg,#1a2233,#151b26);border:1px solid var(--line);border-radius:12px;padding:18px 22px;}
+  .act li{margin:9px 0 9px 18px;font-size:14px;}
+  .act li b{color:var(--gold);}
+  .note{font-size:12px;color:var(--sub);margin-top:8px;}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+  @media(max-width:800px){.grid2{grid-template-columns:1fr;}}
+  .footer{margin-top:40px;font-size:11.5px;color:var(--sub);border-top:1px solid var(--line);padding-top:14px;}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="meta">🎮 {{游戏名}}</div>
+  <h1>{{渠道}} {{时间范围}} 素材复盘 × {{下月}} 资源规划</h1>
+  <div class="meta">数据源：{{数据源说明}} · 打标方式：{{打标方式}}</div>
+
+  <div class="chips">
+    <div class="chip">累计曝光 <b class="blue">{{曝光}}</b></div>
+    <div class="chip">整体 CTR <b class="blue">{{整体CTR}}</b></div>
+    <div class="chip">{{峰值月}} CTR <b class="up">{{峰值CTR}}</b>（大盘 {{峰值排名}}）</div>
+    <div class="chip">最强组合 <b class="gold">{{最强组合}}</b></div>
+    <div class="chip">{{高分层}} CTR <b class="up">{{高分层CTR}}</b></div>
+    <div class="chip">{{下月}}素材缺口 <b class="warn">{{缺口}}</b></div>
+  </div>
+
+  <h2>一、核心结论与行动建议</h2>
+  <!-- 每条结论一个卡片：标签 + 一句话结论 + 数据支撑 + 补充 -->
+  <div class="cbox">
+    <span class="tag t-g">结论① {{结论1标题}}</span>
+    <div>{{结论1正文}}</div>
+  </div>
+  <div class="cbox">
+    <span class="tag t-b">结论② {{结论2标题}}</span>
+    <div>{{结论2正文}}</div>
+  </div>
+  <div class="cbox">
+    <span class="tag t-p">结论③ {{结论3标题}}</span>
+    <div>{{结论3正文}}</div>
+  </div>
+  <div class="cbox">
+    <span class="tag t-y">结论④ {{结论4标题}}</span>
+    <div>{{结论4正文}}</div>
+  </div>
+
+  <h2>⚡ 行动建议</h2>
+  <div class="act">
+    <ol>
+      <li><b>素材迭代：</b>{{建议1}}</li>
+      <li><b>分层配比：</b>{{建议2}}</li>
+      <li><b>平台沟通：</b>{{建议3}}</li>
+      <li><b>试新方向：</b>{{建议4}}</li>
+      <li><b>打标沉淀：</b>{{建议5}}</li>
+    </ol>
+  </div>
+
+  <h2>二、分维度效果明细</h2>
+  <div class="grid2">
+    <div>
+      <table>
+        <tr><th>画风</th><th class="num">样本</th><th class="num">曝光</th><th class="num">CTR</th></tr>
+        {{画风表行}}
+      </table>
+    </div>
+    <div>
+      <table>
+        <tr><th>福利呈现</th><th class="num">样本</th><th class="num">曝光</th><th class="num">CTR</th></tr>
+        {{福利表行}}
+      </table>
+    </div>
+    <div>
+      <table>
+        <tr><th>画面元素（可多选）</th><th class="num">样本</th><th class="num">曝光</th><th class="num">CTR</th></tr>
+        {{元素表行}}
+      </table>
+    </div>
+    <div>
+      <table>
+        <tr><th>节点 / 用户分层</th><th class="num">样本</th><th class="num">曝光</th><th class="num">CTR</th></tr>
+        {{节点分层表行}}
+      </table>
+    </div>
+  </div>
+
+  <table>
+    <tr><th>Benchmark vs 大盘</th>{{benchmark月份表头}}</tr>
+    <tr><td>使用方项目 CTR</td>{{benchmark使用方项目行}}</tr>
+    <tr><td>大盘中位数</td>{{benchmark中位行}}</tr>
+    <tr><td>大盘排名</td>{{benchmark排名行}}</tr>
+  </table>
+  <div class="note">{{benchmark口径说明}}</div>
+
+  <h2>三、{{下月}}资源规划与缺口测算</h2>
+  <div class="cbox"><span class="tag t-b">需求侧</span><div>{{需求侧}}</div></div>
+  <div class="cbox"><span class="tag t-b">供给侧</span><div>{{供给侧}}</div></div>
+  <div class="cbox"><span class="tag t-y">缺口与排期</span><div>{{缺口排期}}</div></div>
+  <div class="cbox"><span class="tag t-g">延展优先级</span><div>{{优先级}}</div></div>
+
+  <h2>四、数据口径与待办</h2>
+  <div class="cbox" style="font-size:13px;color:var(--sub)">{{口径待办}}</div>
+
+  <div class="footer">{{页脚}}</div>
+</div>
+</body>
+</html>

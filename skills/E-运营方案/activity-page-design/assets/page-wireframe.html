@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>{{版本名}} · 站内活动页面设计图（线框骨架）</title>
+<!--
+  ============================================================
+  模板使用说明（不属于页面内容，落稿时保留为注释或删除）
+  1. 本文件只放「玩家在 {{PLATFORM_A}} 活动页看得见、点得动」的交互件。
+     禁止出现：任务逻辑怎么算 / 四类玩家路径 / 奖励归属推导 /
+     备注列判定口径 / 内部同事名 / 内部待办注记 / 「快照示意，非实时」。
+     逻辑是「归位」不是「删除」——它归纯方案第二章备注列、第四章流程图、对应参考文档。
+  2. 单文件、纯静态、零外链（https?:// 零命中），双击可开；div 开闭配平。
+     所有奖品 / 日期 / 价格 / 概率 / 型号一律占位，不写死。
+  3. 文案全量换成当期口径；只借参考页的「活动方式 + 交互结构」，
+     其他游戏专有名词零搬入。
+  4. 屏注＝「▼ 第 N 屏 · 屏名」或非数字「▼ 独立模块 · X」（新增整屏模块用后者、
+     不重新编号），是设计图元信息，不是页面内容；不得夹带内部包装名或口径。
+  4b. 屏号只作示意、模板不预定编号，当期屏序以当期页面设计文件 ＋ 当期方案为准；
+     本期活动目的决定浮层个数与是否含分享入口；组件配色全站统一、占位面积与
+     同排文字量匹配、任务清单项数与签到档位以当期纯方案为准，一律 {{}} 占位。
+  5. 改前必 grep / 重读磁盘现状（用户会手改、编辑器会注入脏属性）。
+  6. 细则见 ../references/page-boundary.md，自检见 ../references/acceptance.md。
+  7. 页面 vs 方案分工按对应参考文档 对应章节：页面不显式点明玩家身份、不搬运营分层口径；
+     方案必须保留分层；对齐只查关键规则 / 触发条件 / 分层结果一致，允许粒度与表述差异。
+  ============================================================
+-->
+<style>
+  /* 配色 token 全站统一：所有模块共用同一套边框 / 底色 / 占位框 / 主按钮，别给单一
+     模块另起特殊配色（历次迭代割裂实证）。占位长条用 flex:1 + min-width:0 自适应，
+     标题收 {{固定宽度}}，禁小方块配大留白；保留 @media 窄屏换行。 */
+  :root { --line:#c9d2dc; --ph:#eef2f6; --ink:#2b3440; --blue:#2f6fd0; --muted:#7b8794; }
+  * { box-sizing:border-box; }
+  body { margin:0; background:#f5f6f8; color:var(--ink); font-family:"Microsoft YaHei",Arial,sans-serif; font-size:14px; }
+  .wrap { max-width:1080px; margin:0 auto; padding:24px 16px 60px; }
+  .screen-tag { margin:28px 0 8px; font-size:12px; color:var(--muted); letter-spacing:1px; }
+  .section { background:#fff; border:1px solid var(--line); border-radius:8px; padding:18px; }
+  .ph { background:var(--ph); border:1px dashed var(--line); border-radius:6px;
+        background-image:linear-gradient(45deg,transparent 49.5%,#dfe6ed 49.5%,#dfe6ed 50.5%,transparent 50.5%),
+                         linear-gradient(-45deg,transparent 49.5%,#dfe6ed 49.5%,#dfe6ed 50.5%,transparent 50.5%);
+        display:flex; align-items:center; justify-content:center; color:#9aa6b2; font-size:12px; text-align:center; }
+  .row { display:flex; gap:12px; align-items:center; flex-wrap:wrap; }
+  .grid { display:grid; gap:12px; }
+  .btn { display:inline-flex; align-items:center; justify-content:center; padding:9px 18px;
+         border-radius:20px; font-size:13px; border:1px solid transparent; cursor:default; }
+  .btn-primary { background:var(--blue); color:#fff; }
+  .btn-ghost { background:#fff; color:var(--blue); border-color:var(--blue); }
+  .btn-done { background:#e3ecf9; color:#6b7c93; }
+  .btn-ready { background:var(--blue); color:#fff; }
+  .btn-locked { background:#eceff2; color:#a4adb7; }
+  .hot { background:#e8564b; color:#fff; font-size:11px; padding:2px 7px; border-radius:9px; }
+  .tag { font-size:11px; color:var(--blue); border:1px solid var(--blue); border-radius:10px; padding:2px 8px; }
+  .cap { font-size:12px; color:var(--muted); }
+  .bar { height:10px; background:#e8edf3; border-radius:6px; overflow:hidden; }
+  .bar > i { display:block; height:100%; background:var(--blue); }
+  .card { border:1px solid var(--line); border-radius:8px; padding:14px; background:#fff; }
+  .card h4 { margin:0 0 8px; font-size:15px; }
+  .card p { margin:0 0 10px; font-size:12px; color:var(--muted); }
+  .num { font-variant-numeric:tabular-nums; font-weight:700; color:var(--blue); }
+  .pool-item { min-height:78px; }
+  .day { flex:1; min-width:78px; padding:10px 6px; text-align:center; border:1px solid var(--line); border-radius:6px; }
+  .day-on { border-color:var(--blue); background:#f2f7ff; }
+  .modal-mask { background:rgba(20,28,38,.35); padding:22px; border-radius:8px; }
+  .modal-box { background:#fff; border-radius:8px; padding:18px; max-width:640px; margin:0 auto; }
+  .foot { margin-top:36px; font-size:12px; color:var(--muted); text-align:center; }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="screen-tag">▼ 第 1 屏 · 导航</div>
+  <div class="section">
+    <div class="row">
+      <div class="tag">{{游戏名}}</div>
+      <div class="row" style="flex:1">
+        <span class="hot">HOT</span>
+        <span>{{屏名}}</span>
+        <span>{{屏名}}</span>
+        <span>我的礼包</span>
+      </div>
+      <div class="btn btn-primary">立即下载</div>
+    </div>
+  </div>
+
+  <div class="screen-tag">▼ 第 2 屏 · 福利合集浮层（是否含分享入口视本期活动目的）</div>
+  <div class="section">
+    <div class="row">
+      <div class="card" style="width:240px">
+        <div class="ph" style="height:44px;border-radius:50%">🎁</div>
+        <p style="margin-top:10px;text-align:center">{{活动任务 · 奖励一览（悬停展开）}}</p>
+      </div>
+      <div class="card" style="flex:1">
+        <div class="cap">{{任务目录（创角 / 邀新 / 组队 / 签到 / 任务清单 / 回归，按当期列）}}</div>
+        <div class="ph" style="height:44px;margin-top:8px">{{奖品展示（触碰 / 悬停展开详情）}}</div>
+      </div>
+      <div class="cap" style="flex:1">{{浮层只做入口与悬停态，不写内部判定口径}}</div>
+    </div>
+  </div>
+
+  <div class="screen-tag">▼ 第 3 屏 · 首屏 KV</div>
+  <div class="section">
+    <div class="ph" style="height:230px">{{主 KV：版本主图作头图，下方延展贴合头图风格}}</div>
+    <div style="margin:18px 0 8px;font-size:26px;font-weight:700">{{主标题}}</div>
+    <div class="cap" style="margin-bottom:14px">{{副行：一句情感向短句}}</div>
+    <div class="row">
+      <div class="btn btn-primary">{{主按钮（单按钮，按钮个数以当期为准）}}</div>
+    </div>
+    <div class="ph" style="height:64px;margin-top:16px">{{大奖钩子 · 首屏福利全部前置}}</div>
+  </div>
+
+  <div class="screen-tag">▼ 第 4 屏 · 全服进度</div>
+  <div class="section">
+    <div class="row" style="justify-content:space-between">
+      <strong>{{全服进度标题}}</strong>
+      <span class="cap">{{进度说明（玩家向，不写判定口径）}}</span>
+    </div>
+    <div class="bar" style="margin:12px 0"><i style="width:{{X}}%"></i></div>
+    <div class="grid" style="grid-template-columns:repeat(3,1fr)">
+      <div class="ph">{{阶梯档 1}}</div>
+      <div class="ph">{{阶梯档 2}}</div>
+      <div class="ph">{{阶梯档 3}}</div>
+    </div>
+  </div>
+
+  <div class="screen-tag">▼ 第 5 屏 · 拉新福利</div>
+  <div class="section">
+    <div class="cap" style="margin-bottom:10px">{{屏级门槛条：解锁条件（以当期为准）}}</div>
+    <strong style="display:block;margin-bottom:12px">{{拉新模块标题}}</strong>
+    <!-- 交互件（按当期取用，全部 {{}} 占位）：双入口「我要发起邀请 / 我要接受邀请」、
+         邀请码输入框、复制 / 分享链接 / 邀请海报、累计邀请进度条、我可暴击 {{N}} 次；
+         栏数按当期定（本案曾三栏＝新玩家 / 老玩家 / 抽奖）。只借机制，专有名词零搬入。 -->
+    <div class="grid" style="grid-template-columns:repeat({{栏数按当期}},1fr)">
+      <div class="card">
+        <h4>{{任务名}}</h4>
+        <p>{{任务条件（玩家向，具体动作）}}</p>
+        <div class="row">
+          <span class="tag">{{奖励}}</span>
+          <span class="num">+{{N}} 次</span>
+        </div>
+        <div class="btn btn-ready" style="margin-top:12px;width:100%">{{按钮动作}}</div>
+      </div>
+      <div class="ph" style="min-height:150px">{{创角礼 / 奖品占位（奖品待公布）}}</div>
+    </div>
+  </div>
+
+  <div class="screen-tag">▼ 独立模块 · {{回归玩家}}（单独成屏，不重编号；配色全站统一）</div>
+  <div class="section">
+    <strong style="display:block;margin-bottom:8px">{{回归标题}}</strong>
+    <div class="cap" style="margin-bottom:10px">{{副标：一句欢迎回来就好}}</div>
+    <div class="row">
+      <div style="flex:0 0 {{固定宽度}}">{{标签 ＋ 主标题}}</div>
+      <div class="ph" style="flex:1;min-width:0;height:110px">{{回归专属礼 · 横向长条奖品占位（面积与同排文字量匹配）}}</div>
+      <div class="btn btn-primary">{{领回归专属礼}}</div>
+    </div>
+  </div>
+
+  <div class="screen-tag">▼ 第 {{N}} 屏 · {{召回 / 组队模块名（按当期）}}</div>
+  <div class="section">
+    <strong style="display:block;margin-bottom:12px">{{组队模块标题}}</strong>
+    <div class="grid" style="grid-template-columns:repeat(3,1fr)">
+      <div class="card"><h4>{{阶梯人数（档数按当期）}}</h4><p>{{阶梯礼}}</p><div class="btn btn-locked" style="width:100%">未达成</div></div>
+      <div class="card"><h4>{{阶梯人数}}</h4><p>{{阶梯礼}}</p><div class="btn btn-ready" style="width:100%">立即领取</div></div>
+      <div class="card"><h4>{{阶梯人数}}</h4><p>{{阶梯礼}}</p><div class="btn btn-locked" style="width:100%">未开放</div></div>
+    </div>
+  </div>
+
+  <div class="screen-tag">▼ 第 7 屏 · 任务与抽奖（抽奖主模块在上、任务清单子模块在下；落稿时按当期结构摆放）</div>
+  <div class="section">
+    <div class="grid" style="grid-template-columns:1fr">
+      <div>
+        <strong style="display:block;margin-bottom:10px">{{任务清单标题}}</strong>
+        <!-- 清单项数 / 任务名 / 次数 / 上限以当期纯方案为准（本案 5 项、各项单独封顶）；此处仅示意按钮三态。 -->
+        <div class="card" style="margin-bottom:10px"><h4>{{任务名}}</h4><p>{{条件}}</p><div class="row"><span class="num">+{{N}} 次</span><span class="cap">0/{{上限}}</span><div class="btn btn-done">已领取</div></div></div>
+        <div class="card" style="margin-bottom:10px"><h4>{{任务名}}</h4><p>{{条件}}</p><div class="row"><span class="num">+{{N}} 次</span><span class="cap">{{M}}/{{上限}}</span><div class="btn btn-ready">立即领取</div></div></div>
+        <div class="card"><h4>{{任务名}}</h4><p>{{条件}}</p><div class="row"><span class="num">+{{N}} 次</span><span class="cap">0/{{上限}}</span><div class="btn btn-locked">未达成</div></div></div>
+      </div>
+      <div>
+        <strong style="display:block;margin-bottom:10px">{{抽奖区标题}}</strong>
+        <div class="row" style="justify-content:space-between">
+          <span class="cap">任务进度 <span class="num">3/5</span></span>
+          <span class="cap">剩余次数 <span class="num">{{X}}</span></span>
+        </div>
+        <div class="bar" style="margin:10px 0 14px"><i style="width:60%"></i></div>
+        <div class="ph" style="height:110px;margin-bottom:12px">{{开启台 / 意象图}}</div>
+        <div class="grid" style="grid-template-columns:repeat(4,1fr)">
+          <div class="ph pool-item">{{奖品}}</div>
+          <div class="ph pool-item">{{奖品}}</div>
+          <div class="ph pool-item">{{奖品}}</div>
+          <div class="ph pool-item">{{奖品}}</div>
+          <div class="ph pool-item">{{奖品}}</div>
+          <div class="ph pool-item">{{奖品}}</div>
+          <div class="ph pool-item">{{奖品}}</div>
+          <div class="ph pool-item">{{奖品}}</div>
+        </div>
+        <div class="row" style="margin-top:14px;justify-content:space-between">
+          <div class="btn btn-primary">点击抽奖</div>
+          <span class="cap">中奖名单</span>
+          <span class="cap">概率公示</span>
+          <span class="cap">我的礼包</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="screen-tag">▼ 第 8 屏 · 签到常驻条（逐日礼 / 累计阶梯礼两分区，档位以当期为准）</div>
+  <div class="section">
+    <div class="row" style="justify-content:space-between;margin-bottom:12px">
+      <strong>{{每日签到 · 逐日礼}}</strong>
+      <span class="cap">{{累计签到 · 阶梯档位（以当期纯方案为准，首日只发逐日礼）}}</span>
+    </div>
+    <div class="row">
+      <div class="day day-on">DAY1<br><span class="cap">{{礼}}</span></div>
+      <div class="day day-on">DAY2<br><span class="cap">{{礼}}</span></div>
+      <div class="day day-on">DAY3<br><span class="cap">{{礼}}</span></div>
+      <div class="day">DAY4<br><span class="cap">{{礼}}</span></div>
+      <div class="day">DAY5<br><span class="cap">{{礼}}</span></div>
+      <div class="day">DAY6<br><span class="cap">{{礼}}</span></div>
+      <div class="day">DAY7<br><span class="cap">{{礼}}</span></div>
+    </div>
+  </div>
+
+  <div class="screen-tag">▼ 第 9 屏 · 版本情报</div>
+  <div class="section">
+    <strong style="display:block;margin-bottom:12px">{{版本情报标题}}</strong>
+    <div class="grid" style="grid-template-columns:repeat(3,1fr)">
+      <div class="ph" style="min-height:96px">{{情报 1}}</div>
+      <div class="ph" style="min-height:96px">{{情报 2}}</div>
+      <div class="ph" style="min-height:96px">{{情报 3}}</div>
+    </div>
+  </div>
+
+  <div class="screen-tag">▼ 第 10 屏 · 活动规则弹窗</div>
+  <div class="section modal-mask">
+    <div class="modal-box">
+      <div class="row" style="justify-content:space-between;margin-bottom:12px">
+        <strong>活动规则</strong><span class="cap">×</span>
+      </div>
+      <div class="ph" style="min-height:120px">{{规则正文占位；奖品与中奖概率以页面公示为准}}</div>
+    </div>
+  </div>
+
+  <div class="foot">{{版本名}} · 页面设计图（线框骨架）｜屏注为设计图元信息，非页面元素</div>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,81 @@
+{
+  "id": "base",
+  "name": "通用缺省",
+  "note": "结构示例：所有数值均为演示用中性值，非任何真实项目数据。上线前按 config.example.yaml 填实际值，并把所有 {{...}} 占位符替换掉。",
+  "extends": null,
+  "service_line": null,
+  "node": {
+    "type": null,
+    "date": null,
+    "version_date": null,
+    "activity_window": null,
+    "days": null
+  },
+  "goal": [],
+  "budget": {
+    "cash": null,
+    "model": null,
+    "resource_cost": 0,
+    "reference_band": null,
+    "over_requires_reason": null,
+    "baseline_ref": null
+  },
+  "channels": [],
+  "channel_order": [],
+  "weight": {
+    "enabled": false,
+    "order": [],
+    "equal_pairs": [],
+    "tolerance": 100,
+    "card_pool_span_pp": 10,
+    "note": "默认不启用权重排序。多均等渠道的资源置换场景才在子档里打开。"
+  },
+  "prize": {
+    "model": "none",
+    "bands": {},
+    "exceptions": [],
+    "exclude_types": [],
+    "card_denoms": [],
+    "structure": {
+      "card_ratio_min": 0.6,
+      "head_per_channel_min": 1,
+      "second_gt_head": false,
+      "check_bands": false
+    },
+    "count_by_budget": [],
+    "note": "model=lottery_tiers 才启用价带/份数/权重一整套检查；积分制、CPS、纯采买、无奖品场景一律关闭。"
+  },
+  "task_kit": {
+    "derived_from": "capabilities",
+    "tasks": [],
+    "reward": null,
+    "note": "任务链按渠道能力派生，不写死件套数。"
+  },
+  "metrics": {
+    "comparable": [],
+    "noncomparable": [
+      "曝光量",
+      "点击量",
+      "PV",
+      "抽奖人次",
+      "播放量",
+      "讨论量"
+    ],
+    "forbidden": [],
+    "click_only": {},
+    "prebooking_false_claim": []
+  },
+  "schedule": {
+    "anchors": [],
+    "risks": [],
+    "needs_de_approval": false,
+    "needs_version_delay_risk": false
+  },
+  "delivery": {
+    "audience": "内部",
+    "desensitize_keywords": [],
+    "must_self_contained": true
+  },
+  "overrides_log": [],
+  "_fill_hint": "本文件是机读配置模板：填完占位符、把中性示例值换成你的实际值后才能跑脚本；字段含义见 01-占位符字典.md 与 README「场景档」一节。"
+}
